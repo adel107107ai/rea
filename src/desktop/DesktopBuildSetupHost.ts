@@ -5,6 +5,7 @@ import { basename, dirname, isAbsolute, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import type { DoctorHost } from "../application/Doctor.js";
+import { nodeExecutable } from "../process/NodeExecutable.js";
 import type { ArtifactResourceScope } from "../artifacts/ArtifactResourceScope.js";
 import { assertSetupActive } from "../application/SetupCancellation.js";
 import { absoluteCallerPath } from "../filesystem/callerPath.js";
@@ -102,7 +103,7 @@ export const systemDesktopBuildSetupHost = (
           await mkdir(dirname(archive), { recursive: true });
           const workspace = await mkdtemp(join(tmpdir(), "rea-desktop-pack-"));
           await runDesktopBuildOwnedCommand({
-            command: process.execPath,
+            command: nodeExecutable(),
             arguments: [PACK_SCRIPT, partial],
             timeoutMs: PACK.timeout,
             maxOutputBytes: PACK.maxBuffer,

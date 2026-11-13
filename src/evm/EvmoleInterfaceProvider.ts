@@ -1,5 +1,6 @@
 import { EvmAdmissionError } from "./EvmAdmissionError.js";
 import type { ProviderRejectionCode } from "../domain/providerSelection.js";
+import { nodeExecutable } from "../process/NodeExecutable.js";
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
 import type { JsonValue } from "../domain/jsonValue.js";
 import { safeParseUtf8Json } from "../domain/safeJson.js";
@@ -620,7 +621,7 @@ export class EvmoleInterfaceProvider implements EvmInterfacePort {
             "--core=0:",
             `--cpu=${String(workerLimits.cpuSeconds)}:`,
             "--",
-            process.execPath,
+            nodeExecutable(),
             `--max-old-space-size=${String(EVM_WORKER_HEAP_MIB)}`,
             "--v8-pool-size=1",
             "--disable-wasm-trap-handler",

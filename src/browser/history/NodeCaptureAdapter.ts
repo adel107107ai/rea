@@ -6,6 +6,7 @@ import {
   type CaptureDecoderHeap,
 } from "../../config/captureDecoderHeap.js";
 import { CAPTURE_DECODER_SEMI_SPACE_MIB } from "../../domain/analysisResourceLimits.js";
+import { nodeExecutable } from "../../process/NodeExecutable.js";
 import {
   NODE_CAPTURE_HEAP_ENFORCED,
   captureDecoderProcessMemoryLimitBytes,
@@ -68,7 +69,7 @@ export class NodeCaptureAdapter implements HistoricalCaptureFormatAdapter {
         `${this.format} decoding requires an enforced decoder memory limit. Run REA with Node.js on this host.`,
       );
     return {
-      command: process.execPath,
+      command: nodeExecutable(),
       arguments: [
         `--max-old-space-size=${String(this.heap.oldGenerationMiB)}`,
         `--max-semi-space-size=${String(CAPTURE_DECODER_SEMI_SPACE_MIB)}`,

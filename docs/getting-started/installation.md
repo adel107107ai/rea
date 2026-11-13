@@ -449,6 +449,25 @@ missing `ps`. A provider that fails an earlier configuration check, such as
 JADX without `REA_JADX_MCP_JAR`, keeps that reason. The other providers keep
 their own status. `open_binary` keeps the refusal described above.
 
+### Hosts that report a loader as the Node executable
+
+REA launches its JavaScript workers and several decoders by running the current
+interpreter again with V8 heap flags. Where the Node binary's `PT_INTERP` is the
+platform linker, as in Android/Termux-style prefixes, Node reports that loader
+as `process.execPath`, so the launch passes `--max-old-space-size` to the
+linker. The child then fails with `expected absolute path:
+"--max-old-space-size=…"` and the caller reports `execution_failure` with
+`phase: "startup"`.
+
+Set `REA_NODE_BINARY` to the absolute path of the real Node executable for that
+host, for example
+`REA_NODE_BINARY=/data/data/com.example/files/usr/bin/node`. It applies to
+JavaScript analysis, web bundle analysis, source-map decoding, capture
+decoding, EVM interface recovery, SQLite inspection, the JADX workspace
+guardian, packaging and `rea doctor`. Unset, every launch uses
+`process.execPath` unchanged; a relative value is refused rather than resolved
+against the working directory.
+
 ## Diagnose, update, and remove
 
 `rea doctor --json` is strictly read-only. `rea update` updates only the npm or Bun global installation that owns the running CLI. Source checkouts and package-runner copies must be updated through the mechanism that owns them; a fresh package-runner invocation can use `npx rea-agents@latest` or `bunx rea-agents@latest`. `rea uninstall` removes only REA-owned agent registrations and skill files; `--purge-data` additionally removes REA cache and state paths.

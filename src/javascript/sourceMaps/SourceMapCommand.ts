@@ -8,6 +8,7 @@ import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ExecutionOptions } from "../../application/AnalysisProvider.js";
+import { nodeExecutable } from "../../process/NodeExecutable.js";
 import { AnalysisError } from "../../domain/analysisErrorBase.js";
 import { analysisErrorWithCleanupFailure } from "../../domain/analysisErrorCleanup.js";
 import {
@@ -235,7 +236,7 @@ class OwnedCodec implements SourceMapCleanupOwner {
     const spawned = await (
       this.dependencies.launcher ?? spawnOwnedProviderProcess
     )({
-      command: process.execPath,
+      command: nodeExecutable(),
       arguments: [
         `--max-old-space-size=${String(this.limits.codecHeapMiB)}`,
         "--max-semi-space-size=8",

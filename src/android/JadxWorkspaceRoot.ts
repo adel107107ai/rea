@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import { z } from "zod";
 
+import { nodeExecutable } from "../process/NodeExecutable.js";
 import { PrivateRuntimeRoot } from "../process/PrivateRuntimeRoot.js";
 
 /** Match the native owner's ordinary spelling only for extended local drive paths. */
@@ -93,7 +94,7 @@ class WindowsJadxWorkspaceRoot implements JadxWorkspaceRoot {
 
   static async create(): Promise<WindowsJadxWorkspaceRoot> {
     const parent = tmpdir();
-    const child = spawn(process.execPath, [guardianSource, parent], {
+    const child = spawn(nodeExecutable(), [guardianSource, parent], {
       detached: true,
       windowsHide: true,
       stdio: ["pipe", "pipe", "pipe"],

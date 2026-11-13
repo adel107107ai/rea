@@ -19,6 +19,7 @@ import {
 import { parseMcpOutputSchemaProfile } from "./config/mcpOutputSchemaProfile.js";
 import { parseMcpToolFamilies } from "./config/mcpToolFamilies.js";
 import { parseMcpToolCatalogProfile } from "./config/mcpToolCatalogProfile.js";
+import { nodeExecutable } from "./process/NodeExecutable.js";
 import {
   DISCOVER_TOOLS,
   HOT_TOOL_NAMES,
@@ -377,7 +378,7 @@ export const runProductionMcpDoctorCli = async (
     };
   }
   const report = await runProductionMcpDoctor({
-    command: process.execPath,
+    command: nodeExecutable(),
     args: [resolve(input.dispatcherPath), "mcp"],
     cwd: input.packageRoot,
     environment: process.env,

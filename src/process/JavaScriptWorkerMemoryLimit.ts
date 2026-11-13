@@ -25,7 +25,9 @@ export interface JavaScriptWorkerHost {
 }
 
 /**
- * Process commit limit for a JavaScript worker launched on `process.execPath`.
+ * Process commit limit for a JavaScript worker launched on REA's Node
+ * executable (`process.execPath`, or `REA_NODE_BINARY` where the host reports a
+ * loader path instead).
  *
  * Node.js enforces each worker's V8 heap flags, so it receives no process
  * limit (null) and its launch is unchanged. Bun ignores those flags; on Windows

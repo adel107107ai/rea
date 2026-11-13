@@ -1,5 +1,6 @@
 import type { JavaScriptSemanticPrecisionInput } from "../domain/javascript/javascriptSemanticPrecision.js";
 import { analysisErrorWithCancellation } from "../domain/analysisErrorCancellation.js";
+import { nodeExecutable } from "../process/NodeExecutable.js";
 import { WorkerFrameSignal } from "../process/WorkerFrameSignal.js";
 import { createHash, randomUUID } from "node:crypto";
 import { open, rm } from "node:fs/promises";
@@ -577,7 +578,7 @@ export class WebBundleAnalysisWorker {
     const memoryLimitBytes = javaScriptWorkerMemoryLimitBytes(this.heapMb);
     await this.#runtime.start(
       {
-        command: process.execPath,
+        command: nodeExecutable(),
         arguments: [
           `--max-old-space-size=${String(this.heapMb)}`,
           "--max-semi-space-size=8",

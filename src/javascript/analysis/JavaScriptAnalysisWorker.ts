@@ -1,6 +1,7 @@
 import { analysisErrorWithCancellation } from "../../domain/analysisErrorCancellation.js";
 import { safeParseUtf8Json } from "../../domain/safeJson.js";
 import { analysisSettingLimit } from "../../domain/analysisSettingDefinitions.js";
+import { nodeExecutable } from "../../process/NodeExecutable.js";
 import { WorkerFrameSignal } from "../../process/WorkerFrameSignal.js";
 import type {
   JavaScriptSemanticProjectionCapacity,
@@ -673,7 +674,7 @@ export class JavaScriptAnalysisWorker {
     delete environment.NODE_OPTIONS;
     await this.#runtime.start(
       {
-        command: process.execPath,
+        command: nodeExecutable(),
         arguments: [
           `--max-old-space-size=${String(this.limits.heapMb)}`,
           "--max-semi-space-size=8",

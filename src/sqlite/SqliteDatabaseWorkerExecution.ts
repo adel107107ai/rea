@@ -1,4 +1,5 @@
 import { safeParseUtf8Json } from "../domain/safeJson.js";
+import { nodeExecutable } from "../process/NodeExecutable.js";
 import {
   bindArtifactFileCleanup,
   artifactFileCancellationCause,
@@ -225,7 +226,7 @@ export const executeSqliteDatabaseWorker = async (request: {
     request.environment;
   const execution = await runOwnedCommand(
     {
-      command: process.execPath,
+      command: nodeExecutable(),
       arguments: [
         "--max-old-space-size=256",
         fileURLToPath(new URL("./SqliteDatabaseWorker.js", import.meta.url)),
