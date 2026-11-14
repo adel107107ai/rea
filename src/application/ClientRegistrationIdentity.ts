@@ -12,6 +12,7 @@ import {
 } from "../domain/runtimeVersion.js";
 import { absoluteCallerPath } from "../filesystem/callerPath.js";
 import { PRODUCT_IDENTITY } from "../identity.js";
+import { nodeExecutable } from "../process/NodeExecutable.js";
 
 /** Package runners recognized for invocation guidance and legacy registrations. */
 type PackageRunner = "npx" | "bunx";
@@ -76,7 +77,7 @@ export const currentClientRegistrationCommand = (
   if (entrypointPath === undefined || entrypointPath.length === 0) return [];
   return [
     registrationRuntimePath(
-      process.execPath,
+      nodeExecutable(),
       javaScriptRuntime(process.versions).id,
       environment,
       platform,
@@ -303,7 +304,7 @@ const inspectDirectRegistrationCommand = (
       };
     const interpreterIdentity = entrypointIdentity(
       interpreter,
-      process.execPath,
+      nodeExecutable(),
     );
     if (interpreterIdentity !== "owned")
       return {

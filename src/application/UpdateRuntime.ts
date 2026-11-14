@@ -1,5 +1,6 @@
 import { realpath, stat } from "node:fs/promises";
 import { homeDirectoryFromEnvironment } from "../config/homeDirectory.js";
+import { nodeExecutable } from "../process/NodeExecutable.js";
 import { absoluteCallerPath } from "../filesystem/callerPath.js";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -311,7 +312,7 @@ export const systemUpdateHost = (
     installedVersion: async (installation) => {
       const result = await commands.runProbe(
         [
-          process.execPath,
+          nodeExecutable(),
           join(installation.packageRoot, "scripts", "rea.mjs"),
           "--version",
         ],

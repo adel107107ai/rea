@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { RegularFileCleanupFailure } from "../filesystem/OwnedRegularFile.js";
+import { nodeExecutable } from "../process/NodeExecutable.js";
 
 import {
   readClientRegistrationInspections,
@@ -155,7 +156,7 @@ export const planIntegrationMaintenance = async (
     if (scope.clients.length === 0 && !scope.skill)
       return { status: "current", plannedActions: [] };
     const command = [
-      process.execPath,
+      nodeExecutable(),
       entryPoint,
       "setup",
       ...scope.clients.flatMap((client) => ["--client", client]),
