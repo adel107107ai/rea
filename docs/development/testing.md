@@ -30,6 +30,20 @@ execution policy. Keep the repository's pinned Node.js and npm versions on
 `PATH`; this does not install a toolchain or fix missing dependencies. Scripts
 that invoke PowerShell themselves remain subject to their own policy checks.
 
+Where `process.execPath` is the platform loader rather than a runnable Node.js
+binary — an Android app-private prefix, for example a termux-style userspace
+launched through the linker — the default `forks` pool cannot start, because
+vitest spawns each worker through that path. Add `--pool=threads` for suites on
+such a host:
+
+```sh
+npx vitest run --pool=threads src/config.test.ts
+```
+
+This is a host property, not a repository defect, and desktop CI keeps the fork
+pool. Tests that spawn `process.execPath` themselves still fail on such a host,
+because they assume that path is executable.
+
 | Command                           | Scope                                                                                                                   |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `npm run test:local`              | Dirty source tests via the import graph, without build; explicit source paths run regardless of Git status              |
